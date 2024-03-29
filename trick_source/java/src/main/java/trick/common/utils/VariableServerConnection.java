@@ -69,7 +69,7 @@ public class VariableServerConnection implements AutoCloseable {
      *
      * @param host Variable Server machine name
      * @param port Variable Server port number
-     * @param timeout Time
+     * @param timeout Time out in milliseconds
      * @throws UnknownHostException UnknownHostException
      * @throws IOException IOException
      * @throws SecurityException SecurityException
