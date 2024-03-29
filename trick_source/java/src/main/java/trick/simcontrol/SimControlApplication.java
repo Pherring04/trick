@@ -29,6 +29,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.NotYetConnectedException;
@@ -405,7 +406,7 @@ public class SimControlApplication extends TrickApplication implements PropertyC
 			String errMsg = "Error: SimControlApplication:getInitializationPacket()";
             try {
             	if (host != null && port != -1) {
-            		commandSimcom = new VariableServerConnection(host, port);
+            		commandSimcom = new VariableServerConnection(host, port, 5000);
             	} else {
             		commandSimcom = null;
             	}
@@ -413,14 +414,18 @@ public class SimControlApplication extends TrickApplication implements PropertyC
                 /** The IP address of the host could not be determined. */
                 errMsg += "\n Unknown host \""+host+"\"";
                 errMsg += "\n Please use a valid host name (e.g. localhost)";    
-				printErrorMessage(errMsg);           
+		printErrorMessage(errMsg); 
+            } catch (SocketTimeoutException ste) {
+                /** Connection attempt timed out. */
+                errMsg += "\n Connection Timeout \""+host+"\"";   
+                printErrorMessage(errMsg); 
             } catch (IOException ioe) {
                 /** Port number is unavailable, or there is no connection, etc. */
                 errMsg += "\n Invalid TCP/IP port number \""+port+"\"";
                 errMsg += "\n Please check the server and enter a proper port number!";
                 errMsg += "\n IOException ..." + ioe;
                 errMsg += "\n If there is no connection, please make sure SIM is up running properly!";
-				printErrorMessage(errMsg);
+		printErrorMessage(errMsg);
             } 
             
             if (commandSimcom == null) {
