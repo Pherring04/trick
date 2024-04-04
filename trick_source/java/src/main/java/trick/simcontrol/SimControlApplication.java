@@ -421,6 +421,7 @@ public class SimControlApplication extends TrickApplication implements PropertyC
             } catch (SocketTimeoutException ste) {
                 /** Connection attempt timed out. */
                 errMsg += "\n Connection Timeout \""+host+"\"";
+                errMsg += "\n Please try a different host name (e.g. localhost)";
                 errOnInitConnect = true;
                 printErrorMessage(errMsg); 
             } catch (IOException ioe) {
